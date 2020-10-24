@@ -85,7 +85,7 @@ class _DirectionButtonView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 120),
       height: BUTTON_SIZE,
       width: BUTTON_SIZE,
       decoration: BoxDecoration(

@@ -30,9 +30,9 @@ class GameBoard extends ConsumerWidget {
         return RepaintBoundary(
           child: CustomPaint(
             painter: BoardPainter(
-              player: controller.state.player,
               direction: controller.state.currentDirection,
               snake: controller.state.snake,
+              item: controller.state.item,
             ),
           ),
         );
@@ -44,9 +44,9 @@ class GameBoard extends ConsumerWidget {
 }
 
 class BoardPainter extends CustomPainter {
-  final Offset player;
   final InputDirection direction;
   final List<Offset> snake;
+  final Offset item;
 
   static final borderPaint = Paint()
     ..color = Colors.black87
@@ -56,13 +56,18 @@ class BoardPainter extends CustomPainter {
     ..color = Colors.black26
     ..strokeWidth = 2.0;
 
-  BoardPainter({this.player, this.direction, this.snake});
+  static final playerPaint = Paint()..color = Colors.lightBlue;
+  static final snakePaint = Paint()..color = Colors.lightBlueAccent;
+  static final itemPaint = Paint()..color = Colors.orange;
+
+  BoardPainter({this.item, this.direction, this.snake});
 
   @override
   void paint(Canvas canvas, Size size) {
     final gridSize = size.width / BOARD_SIZE;
 
     drawBoard(canvas, size, gridSize);
+    drawItem(canvas, size, gridSize);
     drawPlayer(canvas, size, gridSize);
   }
 
@@ -87,15 +92,31 @@ class BoardPainter extends CustomPainter {
   }
 
   void drawPlayer(Canvas canvas, Size size, double gridSize) {
-    final playerPaint = Paint()..color = Colors.greenAccent;
     canvas.drawCircle(
-        (player / BOARD_SIZE.toDouble() * size.width)
+        (snake.first / BOARD_SIZE.toDouble() * size.width)
             .translate(gridSize / 2, gridSize / 2),
         gridSize / 2,
         playerPaint);
+
+    final body = snake.getRange(1, snake.length);
+
+    for (final element in body) {
+      canvas.drawCircle(
+          (element / BOARD_SIZE.toDouble() * size.width)
+              .translate(gridSize / 2, gridSize / 2),
+          gridSize / 2,
+          snakePaint);
+    }
+  }
+
+  void drawItem(Canvas canvas, Size size, double gridSize) {
+    canvas.drawCircle(
+        (item / BOARD_SIZE.toDouble() * size.width)
+            .translate(gridSize / 2, gridSize / 2),
+        gridSize / 2,
+        itemPaint);
   }
 
   @override
-  bool shouldRepaint(covariant BoardPainter oldDelegate) =>
-      player != oldDelegate.player;
+  bool shouldRepaint(covariant BoardPainter oldDelegate) => true;
 }

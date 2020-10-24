@@ -10,8 +10,8 @@ enum InputDirection { none, left, up, right, down }
 @freezed
 abstract class AppState with _$AppState {
   const factory AppState({
-    @Default([]) List<Offset> snake,
+    @Default([Offset.zero]) List<Offset> snake,
     @Default(InputDirection.none) InputDirection currentDirection,
-    @Default(Offset.zero) Offset player,
+    @Default(Offset.zero) Offset item,
   }) = _AppState;
 }

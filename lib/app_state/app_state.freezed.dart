@@ -15,13 +15,13 @@ class _$AppStateTearOff {
 
 // ignore: unused_element
   _AppState call(
-      {List<Offset> snake = const [],
+      {List<Offset> snake = const [Offset.zero],
       InputDirection currentDirection = InputDirection.none,
-      Offset player = Offset.zero}) {
+      Offset item = Offset.zero}) {
     return _AppState(
       snake: snake,
       currentDirection: currentDirection,
-      player: player,
+      item: item,
     );
   }
 }
@@ -34,7 +34,7 @@ const $AppState = _$AppStateTearOff();
 mixin _$AppState {
   List<Offset> get snake;
   InputDirection get currentDirection;
-  Offset get player;
+  Offset get item;
 
   $AppStateCopyWith<AppState> get copyWith;
 }
@@ -43,8 +43,7 @@ mixin _$AppState {
 abstract class $AppStateCopyWith<$Res> {
   factory $AppStateCopyWith(AppState value, $Res Function(AppState) then) =
       _$AppStateCopyWithImpl<$Res>;
-  $Res call(
-      {List<Offset> snake, InputDirection currentDirection, Offset player});
+  $Res call({List<Offset> snake, InputDirection currentDirection, Offset item});
 }
 
 /// @nodoc
@@ -59,14 +58,14 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
   $Res call({
     Object snake = freezed,
     Object currentDirection = freezed,
-    Object player = freezed,
+    Object item = freezed,
   }) {
     return _then(_value.copyWith(
       snake: snake == freezed ? _value.snake : snake as List<Offset>,
       currentDirection: currentDirection == freezed
           ? _value.currentDirection
           : currentDirection as InputDirection,
-      player: player == freezed ? _value.player : player as Offset,
+      item: item == freezed ? _value.item : item as Offset,
     ));
   }
 }
@@ -76,8 +75,7 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   factory _$AppStateCopyWith(_AppState value, $Res Function(_AppState) then) =
       __$AppStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {List<Offset> snake, InputDirection currentDirection, Offset player});
+  $Res call({List<Offset> snake, InputDirection currentDirection, Offset item});
 }
 
 /// @nodoc
@@ -93,14 +91,14 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
   $Res call({
     Object snake = freezed,
     Object currentDirection = freezed,
-    Object player = freezed,
+    Object item = freezed,
   }) {
     return _then(_AppState(
       snake: snake == freezed ? _value.snake : snake as List<Offset>,
       currentDirection: currentDirection == freezed
           ? _value.currentDirection
           : currentDirection as InputDirection,
-      player: player == freezed ? _value.player : player as Offset,
+      item: item == freezed ? _value.item : item as Offset,
     ));
   }
 }
@@ -108,14 +106,14 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
 /// @nodoc
 class _$_AppState with DiagnosticableTreeMixin implements _AppState {
   const _$_AppState(
-      {this.snake = const [],
+      {this.snake = const [Offset.zero],
       this.currentDirection = InputDirection.none,
-      this.player = Offset.zero})
+      this.item = Offset.zero})
       : assert(snake != null),
         assert(currentDirection != null),
-        assert(player != null);
+        assert(item != null);
 
-  @JsonKey(defaultValue: const [])
+  @JsonKey(defaultValue: const [Offset.zero])
   @override
   final List<Offset> snake;
   @JsonKey(defaultValue: InputDirection.none)
@@ -123,11 +121,11 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
   final InputDirection currentDirection;
   @JsonKey(defaultValue: Offset.zero)
   @override
-  final Offset player;
+  final Offset item;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(snake: $snake, currentDirection: $currentDirection, player: $player)';
+    return 'AppState(snake: $snake, currentDirection: $currentDirection, item: $item)';
   }
 
   @override
@@ -137,7 +135,7 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       ..add(DiagnosticsProperty('type', 'AppState'))
       ..add(DiagnosticsProperty('snake', snake))
       ..add(DiagnosticsProperty('currentDirection', currentDirection))
-      ..add(DiagnosticsProperty('player', player));
+      ..add(DiagnosticsProperty('item', item));
   }
 
   @override
@@ -149,8 +147,8 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
             (identical(other.currentDirection, currentDirection) ||
                 const DeepCollectionEquality()
                     .equals(other.currentDirection, currentDirection)) &&
-            (identical(other.player, player) ||
-                const DeepCollectionEquality().equals(other.player, player)));
+            (identical(other.item, item) ||
+                const DeepCollectionEquality().equals(other.item, item)));
   }
 
   @override
@@ -158,7 +156,7 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(snake) ^
       const DeepCollectionEquality().hash(currentDirection) ^
-      const DeepCollectionEquality().hash(player);
+      const DeepCollectionEquality().hash(item);
 
   @override
   _$AppStateCopyWith<_AppState> get copyWith =>
@@ -169,14 +167,14 @@ abstract class _AppState implements AppState {
   const factory _AppState(
       {List<Offset> snake,
       InputDirection currentDirection,
-      Offset player}) = _$_AppState;
+      Offset item}) = _$_AppState;
 
   @override
   List<Offset> get snake;
   @override
   InputDirection get currentDirection;
   @override
-  Offset get player;
+  Offset get item;
   @override
   _$AppStateCopyWith<_AppState> get copyWith;
 }

@@ -9,7 +9,13 @@ final _random = math.Random();
 
 final appStateControllerProvider = Provider((ref) => AppStateController(
       state: AppState(
-        player: Offset(
+        snake: [
+          Offset(
+            _random.nextInt(BOARD_SIZE).toDouble(),
+            _random.nextInt(BOARD_SIZE).toDouble(),
+          ),
+        ],
+        item: Offset(
           _random.nextInt(BOARD_SIZE).toDouble(),
           _random.nextInt(BOARD_SIZE).toDouble(),
         ),
@@ -48,12 +54,34 @@ class AppStateController {
     }
   }
 
+  void _addTrail() {
+    state = state.copyWith(
+      snake: [...state.snake, state.snake.first],
+    );
+  }
+
   void _updatePlayer() {
     final moveAmount = _mapDirectionToOffset(state.currentDirection);
-    state = state.copyWith(player: _getNextPosition(state.player, moveAmount));
+    final playerPosition = _getNextPosition(state.snake.first, moveAmount);
+
+    state = state.copyWith(
+      snake: [
+        playerPosition,
+        ...state.snake.getRange(0, state.snake.length - 1)
+      ],
+    );
   }
 
   void updateGameState() {
     _updatePlayer();
+
+    if (state.snake.first == state.item) {
+      _addTrail();
+      state = state.copyWith(
+          item: Offset(
+        _random.nextInt(BOARD_SIZE).toDouble(),
+        _random.nextInt(BOARD_SIZE).toDouble(),
+      ));
+    }
   }
 }

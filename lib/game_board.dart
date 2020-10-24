@@ -7,7 +7,7 @@ const BOARD_SIZE = 15;
 
 final clockProvider = StreamProvider.autoDispose<int>((ref) async* {
   final baseStream =
-      Stream<int>.periodic(const Duration(milliseconds: 500), (c) => c);
+      Stream<int>.periodic(const Duration(milliseconds: 200), (c) => c);
   bool _enabled = true;
   ref.onDispose(() => _enabled = false);
 
@@ -25,15 +25,18 @@ class GameBoard extends ConsumerWidget {
     final controller = watch(appStateControllerProvider);
 
     return clock.when(
-      data: (value) => RepaintBoundary(
-        child: CustomPaint(
-          painter: BoardPainter(
-            player: controller.state.player,
-            direction: controller.state.currentDirection,
-            snake: controller.state.snake,
+      data: (value) {
+        controller.updateGameState();
+        return RepaintBoundary(
+          child: CustomPaint(
+            painter: BoardPainter(
+              player: controller.state.player,
+              direction: controller.state.currentDirection,
+              snake: controller.state.snake,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       loading: () => Container(),
       error: (_, __) => Container(),
     );

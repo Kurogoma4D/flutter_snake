@@ -7,7 +7,7 @@ const BOARD_SIZE = 15;
 
 final clockProvider = StreamProvider.autoDispose<int>((ref) async* {
   final baseStream =
-      Stream<int>.periodic(const Duration(milliseconds: 200), (c) => c);
+      Stream<int>.periodic(const Duration(milliseconds: 120), (c) => c);
   bool _enabled = true;
   ref.onDispose(() => _enabled = false);
 

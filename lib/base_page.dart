@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snake/game_board.dart';
+import 'package:flutter_snake/game_controller.dart';
 
 class BasePage extends StatelessWidget {
   const BasePage({Key key}) : super(key: key);
@@ -23,9 +24,7 @@ class BasePage extends StatelessWidget {
               ),
               Flexible(
                 flex: 3,
-                child: Container(
-                  color: Colors.blue.withOpacity(0.3),
-                ),
+                child: const GameController(),
               ),
             ],
           ),

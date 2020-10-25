@@ -25,18 +25,15 @@ class GameBoard extends ConsumerWidget {
     final controller = watch(appStateControllerProvider);
 
     return clock.when(
-      data: (value) {
-        controller.updateGameState();
-        return RepaintBoundary(
-          child: CustomPaint(
-            painter: BoardPainter(
-              direction: controller.state.currentDirection,
-              snake: controller.state.snake,
-              item: controller.state.item,
-            ),
+      data: (value) => RepaintBoundary(
+        child: CustomPaint(
+          painter: BoardPainter(
+            direction: controller.state.currentDirection,
+            snake: controller.state.snake,
+            item: controller.state.item,
           ),
-        );
-      },
+        ),
+      ),
       loading: () => Container(),
       error: (_, __) => Container(),
     );

@@ -5,14 +5,12 @@ import 'package:flutter_snake/app_state/app_state_controller.dart';
 
 const BOARD_SIZE = 15;
 
-final clockProvider = StreamProvider.autoDispose<int>((ref) async* {
+final clockProvider = StreamProvider<int>((ref) async* {
   final baseStream =
       Stream<int>.periodic(const Duration(milliseconds: 120), (c) => c);
-  bool _enabled = true;
-  ref.onDispose(() => _enabled = false);
 
   await for (final value in baseStream) {
-    if (_enabled) yield value;
+    yield value;
   }
 });
 

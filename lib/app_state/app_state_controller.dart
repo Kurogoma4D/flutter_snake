@@ -130,8 +130,18 @@ class AppStateController {
     );
   }
 
+  void _judgeCollision() {
+    final snakes = state.snake.getRange(1, state.snake.length).toList();
+    final target = snakes.indexWhere((e) => e == state.snake.first);
+    if (target == -1) return;
+
+    state = state.copyWith(snake: [...state.snake.getRange(0, target + 1)]);
+  }
+
   void _updateGameState() {
     _updatePlayer();
+
+    _judgeCollision();
 
     if (state.snake.first == state.item) {
       _addTrail();

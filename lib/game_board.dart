@@ -14,8 +14,8 @@ final clockProvider = StreamProvider<int>((ref) async* {
   }
 });
 
-class GameBoard extends ConsumerWidget {
-  const GameBoard({Key key}) : super(key: key);
+class RebuildOptimizedGameBoard extends ConsumerWidget {
+  const RebuildOptimizedGameBoard({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {

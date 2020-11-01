@@ -18,25 +18,29 @@ class BasePage extends StatelessWidget {
         onKey: (event) => context
             .read(appStateControllerProvider)
             .processKeyEvent(event.logicalKey.keyId),
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            constraints: BoxConstraints(maxWidth: 600),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  flex: 7,
-                  child: AspectRatio(
-                    aspectRatio: 1.0,
-                    child: const GameBoard(),
+        child: SafeArea(
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              constraints: BoxConstraints(maxWidth: 600),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: Center(
+                      child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: const GameBoard(),
+                      ),
+                    ),
                   ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: const GameController(),
-                ),
-              ],
+                  Flexible(
+                    flex: 3,
+                    child: const GameController(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

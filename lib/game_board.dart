@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:flutter_snake/app_state/app_state.dart';
 import 'package:flutter_snake/app_state/app_state_controller.dart';
 
 const BOARD_SIZE = 15;
@@ -23,14 +22,9 @@ class GameBoard extends ConsumerWidget {
     final controller = watch(appStateControllerProvider);
 
     return clock.when(
-      data: (value) => RepaintBoundary(
-        child: CustomPaint(
-          painter: BoardPainter(
-            direction: controller.state.currentDirection,
-            snake: controller.state.snake,
-            item: controller.state.item,
-          ),
-        ),
+      data: (value) => _Contents(
+        snake: controller.state.snake,
+        item: controller.state.item,
       ),
       loading: () => Container(),
       error: (_, __) => Container(),
@@ -38,80 +32,64 @@ class GameBoard extends ConsumerWidget {
   }
 }
 
-class BoardPainter extends CustomPainter {
-  final InputDirection direction;
+class _Contents extends StatelessWidget {
+  const _Contents({
+    Key key,
+    this.item,
+    this.snake,
+  }) : super(key: key);
+
   final List<Offset> snake;
   final Offset item;
 
-  static final borderPaint = Paint()
-    ..color = Colors.black87
-    ..strokeWidth = 2.0;
-
-  static final innerBorderPaint = Paint()
-    ..color = Colors.black26
-    ..strokeWidth = 2.0;
-
-  static final playerPaint = Paint()..color = Colors.lightBlue;
-  static final snakePaint = Paint()..color = Colors.lightBlueAccent;
-  static final itemPaint = Paint()..color = Colors.orange;
-
-  BoardPainter({this.item, this.direction, this.snake});
-
   @override
-  void paint(Canvas canvas, Size size) {
-    final gridSize = size.width / BOARD_SIZE;
-
-    drawBoard(canvas, size, gridSize);
-    drawItem(canvas, size, gridSize);
-    drawPlayer(canvas, size, gridSize);
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        final gridSize = constraint.maxWidth / BOARD_SIZE;
+        return Stack(
+          children: [
+            GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: BOARD_SIZE,
+              ),
+              itemCount: BOARD_SIZE * BOARD_SIZE,
+              itemBuilder: (context, index) => Container(
+                color: index.isEven
+                    ? Colors.green.withOpacity(0.4)
+                    : Colors.lightGreen.withOpacity(0.4),
+              ),
+            ),
+            Positioned(
+              top: item.dy * gridSize,
+              left: item.dx * gridSize,
+              child: Container(
+                width: gridSize,
+                height: gridSize,
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            for (final element in snake)
+              Positioned(
+                top: element.dy * gridSize,
+                left: element.dx * gridSize,
+                child: Container(
+                  width: gridSize,
+                  height: gridSize,
+                  decoration: BoxDecoration(
+                    color: snake.indexOf(element) == 0
+                        ? Colors.lightBlue
+                        : Colors.lightBlueAccent,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
   }
-
-  void drawBoard(Canvas canvas, Size size, double gridSize) {
-    // draw row
-    for (int i = 0; i < BOARD_SIZE + 1; i++) {
-      canvas.drawLine(
-        Offset(0.0, i * gridSize),
-        Offset(size.width, i * gridSize),
-        i % BOARD_SIZE == 0 ? borderPaint : innerBorderPaint,
-      );
-    }
-
-    // draw column
-    for (int i = 0; i < BOARD_SIZE + 1; i++) {
-      canvas.drawLine(
-        Offset(i * gridSize, 0.0),
-        Offset(i * gridSize, size.height),
-        i % BOARD_SIZE == 0 ? borderPaint : innerBorderPaint,
-      );
-    }
-  }
-
-  void drawPlayer(Canvas canvas, Size size, double gridSize) {
-    canvas.drawCircle(
-        (snake.first / BOARD_SIZE.toDouble() * size.width)
-            .translate(gridSize / 2, gridSize / 2),
-        gridSize / 2,
-        playerPaint);
-
-    final body = snake.getRange(1, snake.length);
-
-    for (final element in body) {
-      canvas.drawCircle(
-          (element / BOARD_SIZE.toDouble() * size.width)
-              .translate(gridSize / 2, gridSize / 2),
-          gridSize / 2,
-          snakePaint);
-    }
-  }
-
-  void drawItem(Canvas canvas, Size size, double gridSize) {
-    canvas.drawCircle(
-        (item / BOARD_SIZE.toDouble() * size.width)
-            .translate(gridSize / 2, gridSize / 2),
-        gridSize / 2,
-        itemPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant BoardPainter oldDelegate) => true;
 }
